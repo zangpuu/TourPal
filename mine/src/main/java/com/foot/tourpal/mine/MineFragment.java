@@ -1,6 +1,8 @@
 package com.foot.tourpal.mine;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import com.foot.tourpal.base.BaseFragment;
 import com.foot.tourpal.mine.dummy.DummyContent;
 import com.foot.tourpal.mine.dummy.DummyContent.DummyItem;
+import com.jess.arms.utils.LogUtils;
 
 /**
  * A fragment representing a list of Items.
@@ -27,12 +30,14 @@ public class MineFragment extends BaseFragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    private static MineFragment fragment;
+
     public static MineFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        MineFragment fragment = new MineFragment();
-        fragment.setArguments(args);
+        if(fragment == null) {
+            synchronized (MineFragment.class) {
+                fragment = new MineFragment();
+            }
+        }
         return fragment;
     }
     
@@ -60,6 +65,7 @@ public class MineFragment extends BaseFragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
     }
 
     @Override
@@ -78,6 +84,7 @@ public class MineFragment extends BaseFragment {
             }
             recyclerView.setAdapter(new MyMineRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
         return view;
     }
 
@@ -91,12 +98,14 @@ public class MineFragment extends BaseFragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
     }
 
     /**
@@ -112,5 +121,27 @@ public class MineFragment extends BaseFragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if( isVisibleToUser && isVisible() ) {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse("App://www.foot.com/LoginActivity"));
+            startActivity(intent);
+        }
     }
 }

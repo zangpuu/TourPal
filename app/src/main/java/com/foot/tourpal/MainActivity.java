@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.foot.tourpal.base.BaseActivity;
+import com.foot.tourpal.base.view.MainTabViewPager;
 import com.foot.tourpal.discovery.DiscoveryFragment;
 import com.foot.tourpal.mine.MineFragment;
 import com.foot.tourpal.mine.dummy.DummyContent;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DiscoveryFragment.OnFragmentInteractionListener, MineFragment.OnListFragmentInteractionListener{
 
-    private ViewPager viewPager;
+    private MainTabViewPager viewPager;
     private FragmentPagerAdapter fragmentPagerAdapter;
     private List<Fragment> fragments;
     private BottomNavigationView bottomNavigationView;
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
     protected void initView(){
-        viewPager = (ViewPager) findViewById(R.id.VP_main);
+        viewPager = (MainTabViewPager) findViewById(R.id.VP_main);
         fragments = new ArrayList<>();
         fragments.add(DiscoveryFragment.newInstance());
         fragments.add(RecordFragment.newInstance());

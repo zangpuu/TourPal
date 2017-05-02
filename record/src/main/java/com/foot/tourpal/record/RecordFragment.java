@@ -1,54 +1,70 @@
 package com.foot.tourpal.record;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.TextureMapView;
 import com.foot.tourpal.base.BaseFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.jess.arms.utils.LogUtils;
 
-public class RecordFragment extends BaseFragment implements OnMapReadyCallback {
+public class RecordFragment extends BaseFragment {
 
-    private GoogleMap mMap;
+    private static RecordFragment fragment;
+
+    private TextureMapView mapView;
+    private AMap aMap;
 
     public static RecordFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        RecordFragment fragment = new RecordFragment();
-        fragment.setArguments(args);
+        if(fragment == null) {
+            synchronized (RecordFragment.class) {
+                fragment = new RecordFragment();
+            }
+        }
         return fragment;
     }
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    @Nullable
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_record, container, false);
+        mapView = (TextureMapView) view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        if (aMap == null) {
+            aMap = mapView.getMap();
+        }
+        return view;
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
     }
 }
