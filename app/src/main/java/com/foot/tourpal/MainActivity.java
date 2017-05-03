@@ -35,14 +35,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_discovery:
+                case R.id.navigation_record:
                     viewPager.setCurrentItem(0);
                     return true;
-                case R.id.navigation_record:
-                    viewPager.setCurrentItem(1);
-                    return true;
                 case R.id.navigation_mine:
-                    viewPager.setCurrentItem(2);
+                    viewPager.setCurrentItem(1);
                     return true;
             }
             return false;
@@ -60,13 +57,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void initView(){
         viewPager = (MainTabViewPager) findViewById(R.id.VP_main);
         fragments = new ArrayList<>();
-        fragments.add(DiscoveryFragment.newInstance());
+        //fragments.add(DiscoveryFragment.newInstance());
         fragments.add(RecordFragment.newInstance());
         fragments.add(MineFragment.newInstance());
         fragmentPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(this);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

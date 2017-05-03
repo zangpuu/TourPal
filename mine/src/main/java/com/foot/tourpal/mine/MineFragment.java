@@ -1,8 +1,6 @@
 package com.foot.tourpal.mine;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -139,9 +137,9 @@ public class MineFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if( isVisibleToUser && isVisible() ) {
-            Intent intent = new Intent();
-            intent.setData(Uri.parse("App://www.foot.com/LoginActivity"));
-            startActivity(intent);
+//            Intent intent = new Intent();
+//            intent.setData(Uri.parse("App://www.foot.com/LoginActivity"));
+//            startActivity(intent);
         }
     }
 }
