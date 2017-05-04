@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.foot.tourpal.base.BaseFragment;
+import com.jess.arms.base.BaseFragment;
+import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
 
 
@@ -21,6 +22,7 @@ import com.jess.arms.utils.LogUtils;
  * create an instance of this fragment.
  */
 public class DiscoveryFragment extends BaseFragment {
+    private String tag = this.getClass().getSimpleName();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -107,6 +109,26 @@ public class DiscoveryFragment extends BaseFragment {
         super.onDetach();
         mListener = null;
         LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
+    }
+
+    @Override
+    public void setupFragmentComponent(AppComponent appComponent) {
+
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_discovery, container, false);
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void setData(Object data) {
+
     }
 
     /**

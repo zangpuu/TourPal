@@ -35,4 +35,5 @@ buildscript {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(path: ':base')
+    compile rootProject.ext.dependencies["circleimageview"]
 }

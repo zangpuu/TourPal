@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.TextureMapView;
-import com.foot.tourpal.base.BaseFragment;
+import com.jess.arms.base.BaseFragment;
+import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
 
 public class RecordFragment extends BaseFragment {
 
     private static RecordFragment fragment;
+
+    private String tag = this.getClass().getSimpleName();
 
     private TextureMapView mapView;
     private AMap aMap;
@@ -66,5 +69,25 @@ public class RecordFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    @Override
+    public void setupFragmentComponent(AppComponent appComponent) {
+
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_record, container, false);
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void setData(Object data) {
+
     }
 }

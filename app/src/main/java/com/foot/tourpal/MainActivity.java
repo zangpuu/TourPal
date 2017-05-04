@@ -11,23 +11,29 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.foot.tourpal.base.BaseActivity;
 import com.foot.tourpal.base.view.MainTabViewPager;
 import com.foot.tourpal.discovery.DiscoveryFragment;
 import com.foot.tourpal.mine.MineFragment;
-import com.foot.tourpal.mine.dummy.DummyContent;
 import com.foot.tourpal.record.RecordFragment;
+import com.jess.arms.base.BaseActivity;
+import com.jess.arms.di.component.AppComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DiscoveryFragment.OnFragmentInteractionListener, MineFragment.OnListFragmentInteractionListener{
+import butterknife.BindView;
 
-    private MainTabViewPager viewPager;
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DiscoveryFragment.OnFragmentInteractionListener{
+
     private FragmentPagerAdapter fragmentPagerAdapter;
     private List<Fragment> fragments;
-    private BottomNavigationView bottomNavigationView;
     private MenuItem prevMenuItem;
+
+    @BindView(R.id.VP_main)
+    MainTabViewPager viewPager;
+    @BindView(R.id.navigation)
+    BottomNavigationView bottomNavigationView;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,11 +56,20 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
     }
 
-    protected void initView(){
+    @Override
+    public void setupActivityComponent(AppComponent appComponent) {
+
+    }
+
+    @Override
+    public int initView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void initData() {
         viewPager = (MainTabViewPager) findViewById(R.id.VP_main);
         fragments = new ArrayList<>();
         //fragments.add(DiscoveryFragment.newInstance());
@@ -71,11 +86,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
 

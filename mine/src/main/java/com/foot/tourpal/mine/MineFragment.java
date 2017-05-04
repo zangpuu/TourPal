@@ -1,18 +1,27 @@
 package com.foot.tourpal.mine;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.foot.tourpal.base.BaseFragment;
 import com.foot.tourpal.mine.dummy.DummyContent;
 import com.foot.tourpal.mine.dummy.DummyContent.DummyItem;
+import com.jess.arms.base.BaseFragment;
+import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
+import com.markmao.pullscrollview.ui.widget.PullScrollView;
 
 /**
  * A fragment representing a list of Items.
@@ -20,7 +29,7 @@ import com.jess.arms.utils.LogUtils;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class MineFragment extends BaseFragment {
+public class MineFragment extends BaseFragment implements PullScrollView.OnTurnListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -29,6 +38,16 @@ public class MineFragment extends BaseFragment {
     private OnListFragmentInteractionListener mListener;
 
     private static MineFragment fragment;
+
+    private String tag = this.getClass().getSimpleName();
+
+    private final int scroll_view = R.id.scroll_view;
+
+    private PullScrollView mScrollView;
+    private ImageView mHeadImg;
+
+    private TableLayout mMainLayout;
+
 
     public static MineFragment newInstance() {
         if(fragment == null) {
@@ -90,12 +109,12 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+//        if (context instanceof OnListFragmentInteractionListener) {
+//            mListener = (OnListFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnListFragmentInteractionListener");
+//        }
         LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
     }
 
@@ -104,6 +123,68 @@ public class MineFragment extends BaseFragment {
         super.onDetach();
         mListener = null;
         LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
+    }
+
+    @Override
+    public void setupFragmentComponent(AppComponent appComponent) {
+
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_mine_list, container, false);
+    }
+
+    @Override
+    public void initData() {
+        mScrollView = (PullScrollView) getActivity().findViewById(R.id.scroll_view);
+        mHeadImg = (ImageView) getActivity().findViewById(R.id.background_img);
+
+        mMainLayout = (TableLayout) getActivity().findViewById(R.id.table_layout);
+        mScrollView.setHeader(mHeadImg);
+        mScrollView.setOnTurnListener(this);
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.CENTER;
+        layoutParams.leftMargin = 30;
+        layoutParams.bottomMargin = 10;
+        layoutParams.topMargin = 10;
+
+        for (int i = 0; i < 30; i++) {
+            TableRow tableRow = new TableRow(getActivity());
+            TextView textView = new TextView(getActivity());
+            textView.setText("Test pull down scroll view " + i);
+            textView.setTextSize(20);
+            textView.setPadding(15, 15, 15, 15);
+
+            tableRow.addView(textView, layoutParams);
+            if (i % 2 != 0) {
+                tableRow.setBackgroundColor(Color.LTGRAY);
+            } else {
+                tableRow.setBackgroundColor(Color.WHITE);
+            }
+
+            final int n = i;
+            tableRow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Click item " + n, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            mMainLayout.addView(tableRow);
+        }
+    }
+
+    @Override
+    public void setData(Object data) {
+
+    }
+
+    @Override
+    public void onTurn() {
+
     }
 
     /**
