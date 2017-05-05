@@ -1,4 +1,4 @@
-package com.markmao.pullscrollview.ui.widget;
+package com.foot.tourpal.base.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,8 +11,7 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
-import com.foot.tourpal.mine.R;
-
+import com.foot.tourpal.base.R;
 
 /**
  * 自定义ScrollView

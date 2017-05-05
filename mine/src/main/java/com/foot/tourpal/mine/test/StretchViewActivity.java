@@ -1,4 +1,4 @@
-package com.markmao.pullscrollview.ui;
+package com.foot.tourpal.mine.test;
 
 import android.app.Activity;
 import android.graphics.Color;

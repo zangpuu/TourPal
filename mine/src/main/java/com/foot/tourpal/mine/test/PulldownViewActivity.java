@@ -1,4 +1,4 @@
-package com.markmao.pullscrollview.ui;
+package com.foot.tourpal.mine.test;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -11,8 +11,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.foot.tourpal.base.widget.PullScrollView;
 import com.foot.tourpal.mine.R;
-import com.markmao.pullscrollview.ui.widget.PullScrollView;
 
 /**
  * Pull down ScrollView demo.

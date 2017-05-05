@@ -1,4 +1,4 @@
-package com.markmao.pullscrollview.ui.widget;
+package com.foot.tourpal.base.widget;
 
 import android.content.Context;
 import android.os.Handler;
