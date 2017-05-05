@@ -1,4 +1,4 @@
-package com.foot.tourpal;
+package com.foot.tourpal.business.home;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,14 +12,14 @@ import java.util.List;
  * Created by ZhangPu on 2017/4/10.
  */
 
-public class MainViewPagerAdapter extends FragmentPagerAdapter {
+public class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
 
     private  List<Fragment> fragments;
     private  FragmentManager fm;
     private List<String> tags = new ArrayList<>();
 
-    public MainViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public HomeViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         this.fm = fm;
         this.fragments = fragments;

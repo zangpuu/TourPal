@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.foot.tourpal.R;
 import com.foot.tourpal.mvp.model.entity.User;
-import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jess.arms.base.App;
 import com.jess.arms.base.BaseHolder;
 import com.jess.arms.di.component.AppComponent;
@@ -15,7 +14,7 @@ import com.jess.arms.widget.imageloader.ImageLoader;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 
 import butterknife.BindView;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by jess on 9/4/16 12:56
@@ -42,7 +41,7 @@ public class UserItemHolder extends BaseHolder<User> {
     @Override
     public void setData(User data, int position) {
         Observable.just(data.getLogin())
-                .subscribe(RxTextView.text(mName));
+                .subscribe(s -> mName.setText(s));
 
         mImageLoader.loadImage(mAppComponent.appManager().getCurrentActivity() == null
                         ? mAppComponent.Application() : mAppComponent.appManager().getCurrentActivity(),

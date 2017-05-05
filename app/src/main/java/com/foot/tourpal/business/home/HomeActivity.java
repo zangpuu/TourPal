@@ -1,4 +1,4 @@
-package com.foot.tourpal;
+package com.foot.tourpal.business.home;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.foot.tourpal.base.view.MainTabViewPager;
+import com.foot.tourpal.R;
 import com.foot.tourpal.discovery.DiscoveryFragment;
 import com.foot.tourpal.mine.MineFragment;
 import com.foot.tourpal.record.RecordFragment;
@@ -23,14 +23,14 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DiscoveryFragment.OnFragmentInteractionListener{
+public class HomeActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DiscoveryFragment.OnFragmentInteractionListener{
 
     private FragmentPagerAdapter fragmentPagerAdapter;
     private List<Fragment> fragments;
     private MenuItem prevMenuItem;
 
     @BindView(R.id.VP_main)
-    MainTabViewPager viewPager;
+    HomeTabViewPager viewPager;
     @BindView(R.id.navigation)
     BottomNavigationView bottomNavigationView;
 
@@ -70,12 +70,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void initData() {
-        viewPager = (MainTabViewPager) findViewById(R.id.VP_main);
+        viewPager = (HomeTabViewPager) findViewById(R.id.VP_main);
         fragments = new ArrayList<>();
         //fragments.add(DiscoveryFragment.newInstance());
         fragments.add(RecordFragment.newInstance());
         fragments.add(MineFragment.newInstance());
-        fragmentPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments);
+        fragmentPagerAdapter = new HomeViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
         viewPager.setOffscreenPageLimit(2);

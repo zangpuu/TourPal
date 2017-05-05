@@ -4,11 +4,11 @@ import com.foot.tourpal.mvp.model.entity.User;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by jess on 9/4/16 10:47

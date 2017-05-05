@@ -12,11 +12,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.rx_cache.DynamicKey;
-import io.rx_cache.EvictDynamicKey;
-import io.rx_cache.Reply;
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
+import io.rx_cache2.Reply;
 
 /**
  * Created by jess on 9/4/16 10:56
@@ -40,9 +42,9 @@ public class UserModel extends BaseModel implements UserContract.Model {
                 .getUsers(users
                         , new DynamicKey(lastIdQueried)
                         , new EvictDynamicKey(update))
-                .flatMap(new Func1<Reply<List<User>>, Observable<List<User>>>() {
+                .flatMap(new Function<Reply<List<User>>, ObservableSource<List<User>>>() {
                     @Override
-                    public Observable<List<User>> call(Reply<List<User>> listReply) {
+                    public ObservableSource<List<User>> apply(@NonNull Reply<List<User>> listReply) throws Exception {
                         return Observable.just(listReply.getData());
                     }
                 });

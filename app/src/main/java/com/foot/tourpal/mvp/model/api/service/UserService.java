@@ -4,10 +4,10 @@ import com.foot.tourpal.mvp.model.entity.User;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * 存放关于用户的一些api
