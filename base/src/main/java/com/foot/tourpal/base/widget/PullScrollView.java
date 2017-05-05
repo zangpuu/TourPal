@@ -139,7 +139,8 @@ public class PullScrollView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return onTouchEvent(ev) || super.onInterceptTouchEvent(ev);
+        onTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override

@@ -3,6 +3,11 @@
     <!-- 描边颜色 -->
     <color name="border_clo">#ccc</color>
     <color name="text_clo">#333</color>
-    <color name="white">#fff</color>
     <color name="blue">#419DE4</color>
+
+    <color name="colorPrimary">#C58306</color>
+    <color name="colorPrimaryDark">#C58306</color>
+    <color name="colorAccent">#BF4081</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>

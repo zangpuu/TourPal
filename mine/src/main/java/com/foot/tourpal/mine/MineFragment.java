@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -15,14 +16,17 @@ import com.foot.tourpal.base.widget.PullScrollView;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
+import com.jess.arms.utils.UiUtils;
 
-public class MineFragment extends BaseFragment implements PullScrollView.OnTurnListener {
+public class MineFragment extends BaseFragment implements PullScrollView.OnTurnListener,View.OnClickListener {
 
     private static MineFragment fragment;
     private String tag = this.getClass().getSimpleName();
     private PullScrollView mScrollView;
     private ImageView mHeadImg;
     private TableLayout mMainLayout;
+    private LinearLayout mSetting;
+    private LinearLayout mDev;
 
 
     public static MineFragment newInstance() {
@@ -52,6 +56,13 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
         mMainLayout = (TableLayout) getActivity().findViewById(R.id.table_layout);
         mScrollView.setHeader(mHeadImg);
         mScrollView.setOnTurnListener(this);
+
+        mSetting = (LinearLayout) getActivity().findViewById(R.id.ll_set);
+        mDev = (LinearLayout) getActivity().findViewById(R.id.ll_dev);
+
+        mDev.setOnClickListener(this);
+
+
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT);
@@ -115,6 +126,13 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
 //            Intent intent = new Intent();
 //            intent.setData(Uri.parse("App://www.foot.com/LoginActivity"));
 //            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.ll_dev) {
+            UiUtils.makeText(getActivity(), "开发者");
         }
     }
 }
