@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="add_attention">加好友</string>
+    <string name="add_attention"></string>
     <string name="user_post">等级：资深驴友</string>
     <string name="user_book">挑战自我：101次</string>
     <string name="user_name">张无忌</string>

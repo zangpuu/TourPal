@@ -7,30 +7,28 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     //地图包、搜索包需要的基础权限
-    <!--允许程序打开网络套接字-->
+    <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--允许程序设置内置sd卡的写权限-->
+    <!-- 允许程序设置内置sd卡的写权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--允许程序获取网络状态-->
+    <!-- 允许程序获取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--允许程序访问WiFi网络信息-->
+    <!-- 允许程序访问WiFi网络信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--允许程序读写手机状态和身份-->
+    <!-- 允许程序读写手机状态和身份 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name="com.jess.arms.base.BaseApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true">
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".business.home.HomeActivity"
             android:label="@string/app_name">
@@ -47,6 +45,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.foot.tourpal.business.home.HomeActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -59,35 +58,55 @@
             </intent-filter>
         </activity>
         <activity android:name=".mvp.ui.activity.UserActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="f974199bf6daefa261b05c368c34f71c"/>
+            android:value="f974199bf6daefa261b05c368c34f71c" />
 
-        <!-- autolayout meta
+        <!--
+             autolayout meta
             将设计图的宽高配置后,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
-            -->
+        -->
         <meta-data
             android:name="design_width"
-            android:value="1080"/>
+            android:value="1080" />
         <meta-data
             android:name="design_height"
-            android:value="1920"/>
-        <!--glide配置-->
+            android:value="1920" />
+        <!-- glide配置 -->
         <meta-data
             android:name="com.jess.arms.widget.imageloader.glide.GlideConfiguration"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
 
-        <!--arms配置-->
+        <!-- arms配置 -->
         <meta-data
             android:name="com.foot.tourpal.app.GlobalConfiguration"
-            android:value="ConfigModule"/>
+            android:value="ConfigModule" />
+
+        <activity android:name=".business.dev.DevActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.foot.tourpal.business.home.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="www.foot.com"
+                    android:path="/DevActivity"
+                    android:scheme="App" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

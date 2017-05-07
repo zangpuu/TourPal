@@ -76,4 +76,5 @@ dependencies {
     compile project(path: ':discovery')
     compile project(path: ':record')
     compile project(path: ':mine')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

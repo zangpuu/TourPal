@@ -1,6 +1,8 @@
 package com.foot.tourpal.mine;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,6 +135,9 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
     public void onClick(View v) {
         if(v.getId() == R.id.ll_dev) {
             UiUtils.makeText(getActivity(), "开发者");
+            Intent intent = new Intent();
+            intent.setData(Uri.parse("App://www.foot.com/DevActivity"));
+            startActivity(intent);
         }
     }
 }
