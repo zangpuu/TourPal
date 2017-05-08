@@ -1,15 +1,39 @@
 package com.foot.tourpal.business.dev;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.foot.tourpal.R;
+import com.jess.arms.base.BaseActivity;
+import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.UiUtils;
 
-public class DevActivity extends AppCompatActivity {
+import butterknife.BindView;
+
+public class DevActivity extends BaseActivity implements View.OnClickListener{
+
+    @BindView(R.id.bt_location)
+    Button btLocation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dev);
+    public void setupActivityComponent(AppComponent appComponent) {
+
+    }
+
+    @Override
+    public int initView() {
+        return R.layout.activity_dev;
+    }
+
+    @Override
+    public void initData() {
+        btLocation.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.bt_location) {
+            UiUtils.startActivity(LocationActivity.class);
+        }
     }
 }
