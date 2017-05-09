@@ -17,6 +17,7 @@ import com.foot.tourpal.mine.MineFragment;
 import com.foot.tourpal.record.RecordFragment;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +29,12 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     private FragmentPagerAdapter fragmentPagerAdapter;
     private List<Fragment> fragments;
     private MenuItem prevMenuItem;
+    private RxPermissions rxPermissions;
 
     @BindView(R.id.VP_main)
     HomeTabViewPager viewPager;
     @BindView(R.id.navigation)
     BottomNavigationView bottomNavigationView;
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,7 +61,7 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
-
+        rxPermissions = new RxPermissions(this);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         fragmentPagerAdapter = new HomeViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(this);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -128,5 +129,11 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.rxPermissions = null;
     }
 }

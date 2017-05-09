@@ -33,7 +33,8 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
 
     public static MineFragment newInstance() {
         if(fragment == null) {
-            synchronized (MineFragment.class) {
+            //synchronized (MineFragment.class)
+            {
                 fragment = new MineFragment();
             }
         }
@@ -122,6 +123,12 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        LogUtils.debugInfo(tag, new Exception().getStackTrace()[0].getMethodName());
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if( isVisibleToUser && isVisible() ) {
@@ -139,5 +146,16 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
             intent.setData(Uri.parse("App://www.foot.com/DevActivity"));
             UiUtils.startActivity(intent);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDev = null;
+        mSetting = null;
+        mMainLayout = null;
+        mHeadImg = null;
+        mScrollView = null;
+        fragment = null;
     }
 }
