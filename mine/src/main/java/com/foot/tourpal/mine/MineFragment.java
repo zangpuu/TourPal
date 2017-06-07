@@ -3,6 +3,7 @@ package com.foot.tourpal.mine;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,12 +48,12 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
     }
 
     @Override
-    public View initView(LayoutInflater inflater, ViewGroup container) {
+    public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_mine, container, false);
     }
 
     @Override
-    public void initData() {
+    public void initData(Bundle savedInstanceState) {
         mScrollView = (PullScrollView) getActivity().findViewById(R.id.scroll_view);
         mHeadImg = (ImageView) getActivity().findViewById(R.id.background_img);
 
