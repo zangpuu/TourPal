@@ -80,6 +80,9 @@ public class RecordFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        mapView=null;
+        aMap=null;
+        locationClient=null;
     }
 
     @Override

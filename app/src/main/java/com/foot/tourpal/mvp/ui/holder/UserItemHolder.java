@@ -44,7 +44,7 @@ public class UserItemHolder extends BaseHolder<User> {
                 .subscribe(s -> mName.setText(s));
 
         mImageLoader.loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.Application() : mAppComponent.appManager().getCurrentActivity(),
+                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
                 GlideImageConfig
                         .builder()
                         .url(data.getAvatarUrl())
@@ -55,7 +55,7 @@ public class UserItemHolder extends BaseHolder<User> {
 
     @Override
     protected void onRelease() {
-        mImageLoader.clear(mAppComponent.Application(), GlideImageConfig.builder()
+        mImageLoader.clear(mAppComponent.application(), GlideImageConfig.builder()
                 .imageViews(mAvater)
                 .build());
     }

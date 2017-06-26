@@ -1,5 +1,6 @@
 package com.foot.tourpal.business.dev;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,12 +22,12 @@ public class DevActivity extends BaseActivity implements View.OnClickListener{
     }
 
     @Override
-    public int initView() {
+    public int initView(Bundle savedInstanceState) {
         return R.layout.activity_dev;
     }
 
     @Override
-    public void initData() {
+    public void initData(Bundle savedInstanceState) {
         btLocation.setOnClickListener(this);
     }
 
