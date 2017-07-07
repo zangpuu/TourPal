@@ -2,7 +2,7 @@ package com.foot.tourpal.mvp.presenter;
 
 import android.app.Application;
 
-import com.foot.tourpal.app.utils.RxUtils;
+import com.foot.tourpal.base.tool.RxUtils;
 import com.foot.tourpal.mvp.contract.UserContract;
 import com.foot.tourpal.mvp.model.entity.User;
 import com.foot.tourpal.mvp.ui.adapter.UserAdapter;

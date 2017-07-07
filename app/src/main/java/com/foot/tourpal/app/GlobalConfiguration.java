@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 import com.foot.tourpal.BuildConfig;
 import com.foot.tourpal.R;
-import com.foot.tourpal.mvp.model.api.Api;
+import com.foot.tourpal.base.mvp.Api;
+import com.foot.tourpal.mine.business.login.LoginService;
 import com.foot.tourpal.mvp.model.api.cache.CommonCache;
 import com.foot.tourpal.mvp.model.api.service.CommonService;
 import com.foot.tourpal.mvp.model.api.service.UserService;
@@ -139,7 +140,7 @@ public class GlobalConfiguration implements ConfigModule {
 
     @Override
     public void registerComponents(Context context, IRepositoryManager repositoryManager) {
-        repositoryManager.injectRetrofitService(CommonService.class, UserService.class);
+        repositoryManager.injectRetrofitService(CommonService.class, UserService.class, LoginService.class);
         repositoryManager.injectCacheService(CommonCache.class);
     }
 
@@ -147,6 +148,11 @@ public class GlobalConfiguration implements ConfigModule {
     public void injectAppLifecycle(Context context, List<AppDelegate.Lifecycle> lifecycles) {
         // AppDelegate.Lifecycle 的所有方法都会在基类Application对应的生命周期中被调用,所以在对应的方法中可以扩展一些自己需要的逻辑
         lifecycles.add(new AppDelegate.Lifecycle() {
+
+            @Override
+            public void attachBaseContext(Context base) {
+//                MultiDex.install(base);  //这里比 onCreate 先执行,常用于 MultiDex 初始化,插件化框架的初始化
+            }
 
             @Override
             public void onCreate(Application application) {

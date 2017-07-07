@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.foot.tourpal.R;
 import com.foot.tourpal.discovery.DiscoveryFragment;
-import com.foot.tourpal.mine.MineFragment;
+import com.foot.tourpal.mine.business.login.LoginFragment;
 import com.foot.tourpal.record.RecordFragment;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
@@ -74,8 +74,11 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         viewPager = (HomeTabViewPager) findViewById(R.id.VP_main);
         fragments = new ArrayList<>();
         //fragments.add(DiscoveryFragment.newInstance());
+
+        fragments.add(LoginFragment.newInstance());
+
         fragments.add(RecordFragment.newInstance());
-        fragments.add(MineFragment.newInstance());
+
         fragmentPagerAdapter = new HomeViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
