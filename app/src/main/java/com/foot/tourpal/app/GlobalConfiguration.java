@@ -30,7 +30,6 @@ import com.jess.arms.http.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.utils.UiUtils;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.json.JSONArray;
@@ -42,6 +41,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import me.jessyan.progressmanager.ProgressManager;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -132,6 +132,8 @@ public class GlobalConfiguration implements ConfigModule {
                 })
                 .okhttpConfiguration((context1, okhttpBuilder) -> {//这里可以自己自定义配置Okhttp的参数
                     okhttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
+                    //开启使用一行代码监听 Retrofit／Okhttp 上传下载进度监听,以及 Glide 加载进度监听 详细使用方法查看 https://github.com/JessYanCoding/ProgressManager
+                    ProgressManager.getInstance().with(okhttpBuilder);
                 })
                 .rxCacheConfiguration((context1, rxCacheBuilder) -> {//这里可以自己自定义配置RxCache的参数
                     rxCacheBuilder.useExpiredDataIfLoaderNotAvailable(true);
@@ -160,7 +162,7 @@ public class GlobalConfiguration implements ConfigModule {
                     Timber.plant(new Timber.DebugTree());
                 }
                 //leakCanary内存泄露检查
-                ((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
+                //((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
             }
 
             @Override
@@ -176,32 +178,36 @@ public class GlobalConfiguration implements ConfigModule {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Timber.w(activity + " - onActivityCreated");
-                //这里全局给Activity设置toolbar和title,你想象力有多丰富,这里就有多强大,以前放到BaseActivity的操作都可以放到这里
-                if (activity.findViewById(R.id.toolbar) != null) {
-                    if (activity instanceof AppCompatActivity) {
-                        ((AppCompatActivity) activity).setSupportActionBar((Toolbar) activity.findViewById(R.id.toolbar));
-                        ((AppCompatActivity) activity).getSupportActionBar().setDisplayShowTitleEnabled(false);
-                    } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            activity.setActionBar((android.widget.Toolbar) activity.findViewById(R.id.toolbar));
-                            activity.getActionBar().setDisplayShowTitleEnabled(false);
-                        }
-                    }
-                }
-                if (activity.findViewById(R.id.toolbar_title) != null) {
-                    ((TextView) activity.findViewById(R.id.toolbar_title)).setText(activity.getTitle());
-                }
-                if (activity.findViewById(R.id.toolbar_back) != null) {
-                    activity.findViewById(R.id.toolbar_back).setOnClickListener(v -> {
-                        activity.onBackPressed();
-                    });
-                }
             }
-
 
             @Override
             public void onActivityStarted(Activity activity) {
                 Timber.w(activity + " - onActivityStarted");
+                if (!activity.getIntent().getBooleanExtra("isInitToolbar", false)) {
+                    //由于加强框架的兼容性,故将 setContentView 放到 onActivityCreated 之后,onActivityStarted 之前执行
+                    //而 findViewById 必须在 Activity setContentView() 后才有效,所以将以下代码从之前的 onActivityCreated 中移动到 onActivityStarted 中执行
+                    activity.getIntent().putExtra("isInitToolbar", true);
+                    //这里全局给Activity设置toolbar和title,你想象力有多丰富,这里就有多强大,以前放到BaseActivity的操作都可以放到这里
+                    if (activity.findViewById(R.id.toolbar) != null) {
+                        if (activity instanceof AppCompatActivity) {
+                            ((AppCompatActivity) activity).setSupportActionBar((Toolbar) activity.findViewById(R.id.toolbar));
+                            ((AppCompatActivity) activity).getSupportActionBar().setDisplayShowTitleEnabled(false);
+                        } else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                activity.setActionBar((android.widget.Toolbar) activity.findViewById(R.id.toolbar));
+                                activity.getActionBar().setDisplayShowTitleEnabled(false);
+                            }
+                        }
+                    }
+                    if (activity.findViewById(R.id.toolbar_title) != null) {
+                        ((TextView) activity.findViewById(R.id.toolbar_title)).setText(activity.getTitle());
+                    }
+                    if (activity.findViewById(R.id.toolbar_back) != null) {
+                        activity.findViewById(R.id.toolbar_back).setOnClickListener(v -> {
+                            activity.onBackPressed();
+                        });
+                    }
+                }
             }
 
             @Override
@@ -239,13 +245,20 @@ public class GlobalConfiguration implements ConfigModule {
             public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
                 // 在配置变化的时候将这个 Fragment 保存下来,在 Activity 由于配置变化重建是重复利用已经创建的Fragment。
                 // https://developer.android.com/reference/android/app/Fragment.html?hl=zh-cn#setRetainInstance(boolean)
+                // 如果在 XML 中使用 <Fragment/> 标签,的方式创建 Fragment 请务必在标签中加上 android:id 或者 android:tag 属性,否则 setRetainInstance(true) 无效
                 // 在 Activity 中绑定少量的 Fragment 建议这样做,如果需要绑定较多的 Fragment 不建议设置此参数,如 ViewPager 需要展示较多 Fragment
                 f.setRetainInstance(true);
             }
 
             @Override
             public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
-                ((RefWatcher) ((App) f.getActivity().getApplication()).getAppComponent().extras().get(RefWatcher.class.getName())).watch(this);
+                //这里应该是检测 Fragment 而不是 FragmentLifecycleCallbacks 的泄露。
+                ((RefWatcher) ((App) f.getActivity()
+                        .getApplication())
+                        .getAppComponent()
+                        .extras()
+                        .get(RefWatcher.class.getName()))
+                        .watch(f);
             }
         });
     }

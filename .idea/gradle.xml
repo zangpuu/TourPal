@@ -12,9 +12,6 @@
             <option value="$PROJECT_DIR$/MVPArms/arms" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
-            <option value="$PROJECT_DIR$/discovery" />
-            <option value="$PROJECT_DIR$/mine" />
-            <option value="$PROJECT_DIR$/record" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

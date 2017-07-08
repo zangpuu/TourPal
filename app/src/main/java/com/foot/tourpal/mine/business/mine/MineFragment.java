@@ -15,8 +15,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.foot.tourpal.R;
+import com.foot.tourpal.base.framework.AppCache;
 import com.foot.tourpal.base.widget.PullScrollView;
-import com.foot.tourpal.mine.R;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
@@ -104,7 +105,14 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
 
     @Override
     public void setData(Object data) {
+        if (isAdded() && isVisible())
+            if (AppCache.instance().isLogin()) {
 
+            } else {
+                Intent intent = new Intent();
+                intent.setData(Uri.parse("App://www.foot.com/LoginActivity"));
+                UiUtils.startActivity(getActivity(), intent);
+            }
     }
 
     @Override

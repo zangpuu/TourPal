@@ -1,6 +1,5 @@
 package com.foot.tourpal.business.home;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,9 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.foot.tourpal.R;
-import com.foot.tourpal.discovery.DiscoveryFragment;
+import com.foot.tourpal.business.record.RecordFragment;
 import com.foot.tourpal.mine.business.login.LoginFragment;
-import com.foot.tourpal.record.RecordFragment;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -24,7 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class HomeActivity extends BaseActivity implements ViewPager.OnPageChangeListener, DiscoveryFragment.OnFragmentInteractionListener{
+public class HomeActivity extends BaseActivity implements ViewPager.OnPageChangeListener{
 
     private FragmentPagerAdapter fragmentPagerAdapter;
     private List<Fragment> fragments;
@@ -74,11 +72,9 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         viewPager = (HomeTabViewPager) findViewById(R.id.VP_main);
         fragments = new ArrayList<>();
         //fragments.add(DiscoveryFragment.newInstance());
-
-        fragments.add(LoginFragment.newInstance());
-
         fragments.add(RecordFragment.newInstance());
-
+        //fragments.add(MineFragment.newInstance());
+        fragments.add(LoginFragment.newInstance());
         fragmentPagerAdapter = new HomeViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
@@ -86,11 +82,6 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         viewPager.addOnPageChangeListener(this);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override
@@ -139,4 +130,5 @@ public class HomeActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onDestroy();
         this.rxPermissions = null;
     }
+
 }

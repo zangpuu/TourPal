@@ -1,4 +1,4 @@
-include ':app', ':record', ':mine', ':discovery', ':base'
+include ':app', ':base'
 
 include ':armsDemo', ':arms'
 project(':armsDemo').projectDir = new File(settingsDir, 'MVPArms/app')

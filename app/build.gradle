@@ -74,9 +74,6 @@ dependencies {
     testCompile rootProject.ext.dependencies["canary-release"]
 
     compile project(path: ':base')
-    compile project(path: ':discovery')
-    compile project(path: ':record')
-    compile project(path: ':mine')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
+    compile rootProject.ext.dependencies["circleimageview"]
 }

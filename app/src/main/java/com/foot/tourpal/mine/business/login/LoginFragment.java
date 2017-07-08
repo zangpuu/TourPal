@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.foot.tourpal.R;
 import com.foot.tourpal.base.widget.ClearableEditText;
 import com.foot.tourpal.base.widget.VerificationCodeButton;
-import com.foot.tourpal.mine.R;
 import com.foot.tourpal.mine.di.component.DaggerLoginComponent;
 import com.foot.tourpal.mine.di.module.LoginModule;
 import com.jess.arms.base.BaseFragment;

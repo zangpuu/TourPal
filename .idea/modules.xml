@@ -7,9 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/MVPArms/arms/arms.iml" filepath="$PROJECT_DIR$/MVPArms/arms/arms.iml" />
       <module fileurl="file://$PROJECT_DIR$/MVPArms/app/armsDemo.iml" filepath="$PROJECT_DIR$/MVPArms/app/armsDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/discovery/discovery.iml" filepath="$PROJECT_DIR$/discovery/discovery.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mine/mine.iml" filepath="$PROJECT_DIR$/mine/mine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/record/record.iml" filepath="$PROJECT_DIR$/record/record.iml" />
     </modules>
   </component>
 </project>
