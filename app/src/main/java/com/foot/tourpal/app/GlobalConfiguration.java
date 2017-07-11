@@ -16,10 +16,7 @@ import android.widget.TextView;
 import com.foot.tourpal.BuildConfig;
 import com.foot.tourpal.R;
 import com.foot.tourpal.base.mvp.Api;
-import com.foot.tourpal.mine.business.login.LoginService;
-import com.foot.tourpal.mvp.model.api.cache.CommonCache;
-import com.foot.tourpal.mvp.model.api.service.CommonService;
-import com.foot.tourpal.mvp.model.api.service.UserService;
+import com.foot.tourpal.business.login.model.api.LoginService;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.jess.arms.base.App;
@@ -142,8 +139,8 @@ public class GlobalConfiguration implements ConfigModule {
 
     @Override
     public void registerComponents(Context context, IRepositoryManager repositoryManager) {
-        repositoryManager.injectRetrofitService(CommonService.class, UserService.class, LoginService.class);
-        repositoryManager.injectCacheService(CommonCache.class);
+        repositoryManager.injectRetrofitService(LoginService.class);
+        repositoryManager.injectCacheService();
     }
 
     @Override

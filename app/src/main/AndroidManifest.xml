@@ -79,7 +79,7 @@
             android:value="ConfigModule" />
 
         <activity
-            android:name=".business.home.HomeActivity"
+            android:name=".business.home.ui.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,30 +87,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".business.login.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:parentActivityName=".business.home.HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.foot.tourpal.business.home.HomeActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="www.foot.com"
-                    android:path="/LoginActivity"
-                    android:scheme="App" />
-            </intent-filter>
-        </activity>
 
         <activity android:name=".business.dev.DevActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.foot.tourpal.business.home.HomeActivity" />
+                android:value="com.foot.tourpal.business.home.ui.HomeActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

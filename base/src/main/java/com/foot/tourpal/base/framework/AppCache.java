@@ -8,6 +8,8 @@ public class AppCache {
 
     private static AppCache appCache = null;
     private boolean isLogin = false;
+    private String userId = null;
+    private String token = null;
 
     public static AppCache instance(){
         if(appCache == null){
@@ -22,5 +24,21 @@ public class AppCache {
 
     public void setLogin(boolean login) {
         isLogin = login;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
