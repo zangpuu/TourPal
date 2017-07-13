@@ -26,4 +26,5 @@
     <color name="gray_lite">#c5c5c5</color>
     <color name="progress_background">#ededed</color>
     <color name="blue">#4c90f9</color>
+    <color name="gray_consume_tittle">#ebebeb</color>
 </resources>

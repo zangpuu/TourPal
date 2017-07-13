@@ -1,4 +1,4 @@
-package com.foot.tourpal.di.module;
+package com.foot.tourpal.business.home.module;
 
 import com.foot.tourpal.business.home.contract.HomeContarct;
 import com.foot.tourpal.business.home.model.HomeModel;

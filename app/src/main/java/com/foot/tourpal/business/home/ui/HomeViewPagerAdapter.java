@@ -2,7 +2,7 @@ package com.foot.tourpal.business.home.ui;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by ZhangPu on 2017/4/10.
  */
 
-public class HomeViewPagerAdapter extends FragmentPagerAdapter {
+public class HomeViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     private  List<Fragment> fragments;
@@ -40,7 +40,7 @@ public class HomeViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment instantiateItem(ViewGroup container, int position) {
-        tags.add(makeFragmentName(container.getId(), getItemId(position)));
+        tags.add(makeFragmentName(container.getId(), getItem(position).getId()));
         Fragment fragment = ((Fragment) super.instantiateItem(container, position));
         return fragment;
 

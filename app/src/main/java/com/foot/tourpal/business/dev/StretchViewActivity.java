@@ -1,49 +1,34 @@
-package com.foot.tourpal.business.test;
+package com.foot.tourpal.business.dev;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foot.tourpal.R;
-import com.foot.tourpal.base.widget.PullScrollView;
+
 
 /**
- * Pull down ScrollView demo.
+ * Stretch ScrollView demo.
  *
  * @author markmjw
  * @date 2014-04-30
  */
-public class PulldownViewActivity extends Activity implements PullScrollView.OnTurnListener {
-    private PullScrollView mScrollView;
-    private ImageView mHeadImg;
-
+public class StretchViewActivity extends Activity {
     private TableLayout mMainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_pull_down);
-
-        initView();
-
-        showTable();
-    }
-
-    protected void initView() {
-        mScrollView = (PullScrollView) findViewById(R.id.scroll_view);
-        mHeadImg = (ImageView) findViewById(R.id.background_img);
+        setContentView(R.layout.act_stretch);
 
         mMainLayout = (TableLayout) findViewById(R.id.table_layout);
-
-        mScrollView.setHeader(mHeadImg);
-        mScrollView.setOnTurnListener(this);
+        showTable();
     }
 
     public void showTable() {
@@ -55,10 +40,10 @@ public class PulldownViewActivity extends Activity implements PullScrollView.OnT
         layoutParams.bottomMargin = 10;
         layoutParams.topMargin = 10;
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 40; i++) {
             TableRow tableRow = new TableRow(this);
             TextView textView = new TextView(this);
-            textView.setText("Test pull down scroll view " + i);
+            textView.setText("Test stretch scroll view " + i);
             textView.setTextSize(20);
             textView.setPadding(15, 15, 15, 15);
 
@@ -73,17 +58,11 @@ public class PulldownViewActivity extends Activity implements PullScrollView.OnT
             tableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PulldownViewActivity.this, "Click item " + n, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StretchViewActivity.this, "Click item " + n, Toast.LENGTH_SHORT).show();
                 }
             });
 
             mMainLayout.addView(tableRow);
         }
     }
-
-    @Override
-    public void onTurn() {
-
-    }
-
 }

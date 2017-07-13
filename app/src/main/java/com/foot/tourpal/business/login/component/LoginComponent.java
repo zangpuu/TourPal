@@ -1,7 +1,7 @@
-package com.foot.tourpal.di.component;
+package com.foot.tourpal.business.login.component;
 
 import com.foot.tourpal.business.login.ui.LoginFragment;
-import com.foot.tourpal.di.module.LoginModule;
+import com.foot.tourpal.business.login.module.LoginModule;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.di.scope.FragmentScope;
 

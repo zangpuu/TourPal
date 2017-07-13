@@ -5,31 +5,38 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.foot.tourpal.R;
-import com.foot.tourpal.business.home.presenter.HomePresenter;
+import com.foot.tourpal.app.EventBusTags;
+import com.foot.tourpal.base.framework.AppCache;
+import com.foot.tourpal.business.home.component.DaggerHomeComponent;
 import com.foot.tourpal.business.home.contract.HomeContarct;
-import com.foot.tourpal.business.record.RecordFragment;
+import com.foot.tourpal.business.home.module.HomeModule;
+import com.foot.tourpal.business.home.presenter.HomePresenter;
 import com.foot.tourpal.business.login.ui.LoginFragment;
-import com.foot.tourpal.di.component.DaggerHomeComponent;
-import com.foot.tourpal.di.module.HomeModule;
+import com.foot.tourpal.business.mine.ui.MineFragment;
+import com.foot.tourpal.business.record.RecordFragment;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import timber.log.Timber;
 
 public class HomeActivity extends BaseActivity<HomePresenter> implements HomeContarct.View, ViewPager.OnPageChangeListener{
 
-    private FragmentPagerAdapter fragmentPagerAdapter;
+    private FragmentStatePagerAdapter fragmentPagerAdapter;
     private List<Fragment> fragments;
     private MenuItem prevMenuItem;
     private RxPermissions rxPermissions;
@@ -85,8 +92,11 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         fragments = new ArrayList<>();
         //fragments.add(DiscoveryFragment.newInstance());
         fragments.add(RecordFragment.newInstance());
-        //fragments.add(MineFragment.newInstance());
-        fragments.add(LoginFragment.newInstance());
+        if(AppCache.instance().isLogined()) {
+            fragments.add(MineFragment.newInstance());
+        }else{
+            fragments.add(LoginFragment.newInstance());
+        }
         fragmentPagerAdapter = new HomeViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
@@ -155,7 +165,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
 
     @Override
     public void showMessage(String message) {
-
+        UiUtils.snackbarText(message);
     }
 
     @Override
@@ -171,5 +181,16 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
     @Override
     public RxPermissions getRxPermissions() {
         return rxPermissions;
+    }
+
+    @Subscriber(tag = EventBusTags.LOGIN)
+    private void loginResult(boolean isLogined) {
+        Timber.d(TAG + " isLogin " + isLogined);
+        if(isLogined) {
+            viewPager.setCurrentItem(0);
+            fragments.remove(1);
+            fragments.add(MineFragment.newInstance());
+            fragmentPagerAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -16,4 +16,15 @@
         <item name="android:activityCloseExitAnimation">@anim/translate_center_to_right</item>
     </style>
 
+    <style name="edit_login">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_login_edit</item>
+        <item name="android:textColorHint">@color/gray_consume_tittle</item>
+        <item name="android:textCursorDrawable">@drawable/edit_cursor</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
 </resources>

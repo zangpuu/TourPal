@@ -1,4 +1,4 @@
-package com.foot.tourpal.di.module;
+package com.foot.tourpal.business.login.module;
 
 import com.foot.tourpal.business.login.contract.LoginContract;
 import com.foot.tourpal.business.login.model.LoginModel;

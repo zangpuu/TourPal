@@ -7,7 +7,7 @@ package com.foot.tourpal.base.framework;
 public class AppCache {
 
     private static AppCache appCache = null;
-    private boolean isLogin = false;
+    private boolean isLogined = false;
     private String userId = null;
     private String token = null;
 
@@ -18,12 +18,12 @@ public class AppCache {
         return appCache;
     }
 
-    public boolean isLogin() {
-        return isLogin;
+    public boolean isLogined() {
+        return isLogined;
     }
 
-    public void setLogin(boolean login) {
-        isLogin = login;
+    public void setLogined(boolean logined) {
+        isLogined = logined;
     }
 
     public String getUserId() {

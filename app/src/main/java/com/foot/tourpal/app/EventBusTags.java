@@ -5,5 +5,5 @@ package com.foot.tourpal.app;
  * Contact with jess.yan.effort@gmail.com
  */
 public interface EventBusTags {
-
+    String LOGIN = "login";
 }

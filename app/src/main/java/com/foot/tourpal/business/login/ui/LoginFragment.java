@@ -10,10 +10,10 @@ import android.widget.Button;
 import com.foot.tourpal.R;
 import com.foot.tourpal.base.widget.ClearableEditText;
 import com.foot.tourpal.base.widget.VerificationCodeButton;
+import com.foot.tourpal.business.login.component.DaggerLoginComponent;
 import com.foot.tourpal.business.login.contract.LoginContract;
+import com.foot.tourpal.business.login.module.LoginModule;
 import com.foot.tourpal.business.login.presenter.LoginPresenter;
-import com.foot.tourpal.di.component.DaggerLoginComponent;
-import com.foot.tourpal.di.module.LoginModule;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
@@ -45,13 +45,6 @@ public class LoginFragment extends BaseFragment<LoginPresenter> implements Login
     @Override
     public void setupFragmentComponent(AppComponent appComponent) {
         this.mRxPermissions = new RxPermissions(getActivity());
-//        DaggerUserComponent
-//                .builder()
-//                .appComponent(appComponent)
-//                .userModule(new LoginModule(this))
-//                .build()
-//                .inject(this);
-//        DaggerLoginComponent.builder();
         DaggerLoginComponent
                 .builder()
                 .appComponent(appComponent)
@@ -119,5 +112,16 @@ public class LoginFragment extends BaseFragment<LoginPresenter> implements Login
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        phoneCET = null;
+        codeCET = null;
+        getVCB = null;
+        loginBT = null;
+        mRxPermissions = null;
+        fragment = null;
     }
 }

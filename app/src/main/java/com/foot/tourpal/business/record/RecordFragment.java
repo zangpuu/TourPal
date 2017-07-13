@@ -1,5 +1,6 @@
 package com.foot.tourpal.business.record;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,11 +19,16 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
 import com.foot.tourpal.R;
+import com.foot.tourpal.business.record.component.DaggerRecordComponent;
+import com.foot.tourpal.business.record.contract.RecordContract;
+import com.foot.tourpal.business.record.module.RecordModule;
+import com.foot.tourpal.business.record.presenter.RecordPresenter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
+import com.jess.arms.utils.UiUtils;
 
-public class RecordFragment extends BaseFragment {
+public class RecordFragment extends BaseFragment<RecordPresenter> implements RecordContract.View {
 
     private static RecordFragment fragment;
 
@@ -88,7 +94,12 @@ public class RecordFragment extends BaseFragment {
 
     @Override
     public void setupFragmentComponent(AppComponent appComponent) {
-
+        DaggerRecordComponent
+                .builder()
+                .appComponent(appComponent)
+                .recordModule(new RecordModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -165,4 +176,29 @@ public class RecordFragment extends BaseFragment {
             }
         }
     };
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+        UiUtils.snackbarText(message);
+    }
+
+    @Override
+    public void launchActivity(Intent intent) {
+
+    }
+
+    @Override
+    public void killMyself() {
+
+    }
 }

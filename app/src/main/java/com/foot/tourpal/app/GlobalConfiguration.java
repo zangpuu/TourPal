@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.foot.tourpal.BuildConfig;
 import com.foot.tourpal.R;
 import com.foot.tourpal.base.mvp.Api;
-import com.foot.tourpal.business.login.model.api.LoginService;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.jess.arms.base.App;
@@ -25,8 +24,8 @@ import com.jess.arms.di.module.GlobalConfigModule;
 import com.jess.arms.http.GlobalHttpHandler;
 import com.jess.arms.http.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
-import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.utils.UiUtils;
+import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.json.JSONArray;
@@ -138,12 +137,6 @@ public class GlobalConfiguration implements ConfigModule {
     }
 
     @Override
-    public void registerComponents(Context context, IRepositoryManager repositoryManager) {
-        repositoryManager.injectRetrofitService(LoginService.class);
-        repositoryManager.injectCacheService();
-    }
-
-    @Override
     public void injectAppLifecycle(Context context, List<AppDelegate.Lifecycle> lifecycles) {
         // AppDelegate.Lifecycle 的所有方法都会在基类Application对应的生命周期中被调用,所以在对应的方法中可以扩展一些自己需要的逻辑
         lifecycles.add(new AppDelegate.Lifecycle() {
@@ -159,7 +152,7 @@ public class GlobalConfiguration implements ConfigModule {
                     Timber.plant(new Timber.DebugTree());
                 }
                 //leakCanary内存泄露检查
-                //((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
+                ((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
             }
 
             @Override

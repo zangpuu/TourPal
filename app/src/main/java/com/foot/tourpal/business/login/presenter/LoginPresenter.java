@@ -3,16 +3,20 @@ package com.foot.tourpal.business.login.presenter;
 import android.app.Application;
 import android.text.TextUtils;
 
+import com.foot.tourpal.app.EventBusTags;
 import com.foot.tourpal.base.framework.AppCache;
 import com.foot.tourpal.base.mvp.Api;
 import com.foot.tourpal.base.tool.RxUtils;
+import com.foot.tourpal.business.login.contract.LoginContract;
 import com.foot.tourpal.business.login.model.entity.GetCodeResponse;
 import com.foot.tourpal.business.login.model.entity.LoginResponse;
-import com.foot.tourpal.business.login.contract.LoginContract;
 import com.google.gson.Gson;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.UiUtils;
+
+import org.simple.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -27,7 +31,7 @@ import timber.log.Timber;
  * Created by ZhangPu on 2017/7/6.
  */
 
-public class LoginPresenter extends BasePresenter <LoginContract.Model, LoginContract.View> {
+public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginContract.View> {
 
     private RxErrorHandler mErrorHandler;
     private AppManager mAppManager;
@@ -35,14 +39,14 @@ public class LoginPresenter extends BasePresenter <LoginContract.Model, LoginCon
 
     @Inject
     public LoginPresenter(LoginContract.Model model, LoginContract.View view, RxErrorHandler handler,
-                          AppManager appManager, Application application){
+                          AppManager appManager, Application application) {
         super(model, view);
         this.mApplication = application;
         this.mErrorHandler = handler;
         this.mAppManager = appManager;
     }
 
-    public void requestCode(String phone){
+    public void requestCode(String phone) {
         mModel.getCode(phone)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -52,18 +56,18 @@ public class LoginPresenter extends BasePresenter <LoginContract.Model, LoginCon
                     @Override
                     public void onNext(@NonNull GetCodeResponse getCodeResponse) {
                         Timber.d(new Gson().toJson(getCodeResponse));
-                        if(!TextUtils.isEmpty(getCodeResponse.getMsg())) {
+                        if (!TextUtils.isEmpty(getCodeResponse.getMsg())) {
                             UiUtils.snackbarText(getCodeResponse.getMsg());
                         }
-                        if(getCodeResponse.getStatus() == Api.RequestSuccess) {
+                        if (getCodeResponse.getStatus() == Api.RequestSuccess) {
                             AppCache.instance().setUserId(getCodeResponse.getData().getUserId());
                         }
                     }
                 });
     }
 
-    public void login(String mobile, String code){
-        if(TextUtils.isEmpty(mobile)) {
+    public void login(String mobile, String code) {
+        if (TextUtils.isEmpty(mobile)) {
             mRootView.showMessage("请填写手机号");
             return;
         } else if (TextUtils.isEmpty(code)) {
@@ -82,10 +86,16 @@ public class LoginPresenter extends BasePresenter <LoginContract.Model, LoginCon
                     public void onNext(@NonNull LoginResponse loginResponse) {
                         Timber.d(new Gson().toJson(loginResponse));
                         if (loginResponse.getStatus() == Api.RequestSuccess) {
+                            AppCache.instance().setLogined(true);
                             AppCache.instance().setToken(loginResponse.getData().getSysUserToken().getToken());
+                            //mAppManager.getCurrentActivity().recreate();
+                            //mApplication.startActivity(new Intent().setData(Uri.parse("App://www.foot.com/HomeActivity")).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            DataHelper.saveDeviceData(mApplication,"loginResult", loginResponse);
                         } else {
                             mRootView.showMessage(loginResponse.getMsg());
                         }
+                        EventBus.getDefault().post(loginResponse.getStatus() == Api.RequestSuccess, EventBusTags.LOGIN);
+                        mRootView.showMessage(loginResponse.getMsg());
                     }
                 });
     }

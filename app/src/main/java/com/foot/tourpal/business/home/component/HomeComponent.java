@@ -1,7 +1,7 @@
-package com.foot.tourpal.di.component;
+package com.foot.tourpal.business.home.component;
 
 import com.foot.tourpal.business.home.ui.HomeActivity;
-import com.foot.tourpal.di.module.HomeModule;
+import com.foot.tourpal.business.home.module.HomeModule;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.di.scope.ActivityScope;
 

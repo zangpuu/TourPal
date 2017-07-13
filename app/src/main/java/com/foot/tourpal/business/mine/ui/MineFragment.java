@@ -1,4 +1,4 @@
-package com.foot.tourpal.business.mine;
+package com.foot.tourpal.business.mine.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,12 +18,16 @@ import android.widget.Toast;
 import com.foot.tourpal.R;
 import com.foot.tourpal.base.framework.AppCache;
 import com.foot.tourpal.base.widget.PullScrollView;
+import com.foot.tourpal.business.mine.component.DaggerMineComponent;
+import com.foot.tourpal.business.mine.contract.MineContract;
+import com.foot.tourpal.business.mine.module.MineModule;
+import com.foot.tourpal.business.mine.presenter.MinePresenter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.LogUtils;
 import com.jess.arms.utils.UiUtils;
 
-public class MineFragment extends BaseFragment implements PullScrollView.OnTurnListener,View.OnClickListener {
+public class MineFragment extends BaseFragment<MinePresenter> implements MineContract.View, PullScrollView.OnTurnListener,View.OnClickListener {
 
     private static MineFragment fragment;
     private String tag = this.getClass().getSimpleName();
@@ -46,7 +50,12 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
     
     @Override
     public void setupFragmentComponent(AppComponent appComponent) {
-
+        DaggerMineComponent
+                .builder()
+                .appComponent(appComponent)
+                .mineModule(new MineModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -106,7 +115,7 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
     @Override
     public void setData(Object data) {
         if (isAdded() && isVisible())
-            if (AppCache.instance().isLogin()) {
+            if (AppCache.instance().isLogined()) {
 
             } else {
                 Intent intent = new Intent();
@@ -167,5 +176,30 @@ public class MineFragment extends BaseFragment implements PullScrollView.OnTurnL
         mHeadImg = null;
         mScrollView = null;
         fragment = null;
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+        UiUtils.snackbarText(message);
+    }
+
+    @Override
+    public void launchActivity(Intent intent) {
+
+    }
+
+    @Override
+    public void killMyself() {
+
     }
 }
