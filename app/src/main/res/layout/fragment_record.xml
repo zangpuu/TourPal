@@ -2,12 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.foot.tourpal.record.RecordFragment">
+    android:layout_height="match_parent">
 
     <com.amap.api.maps.TextureMapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
 
 </RelativeLayout>

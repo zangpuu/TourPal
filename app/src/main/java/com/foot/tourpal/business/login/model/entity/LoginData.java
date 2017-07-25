@@ -1,10 +1,12 @@
 package com.foot.tourpal.business.login.model.entity;
 
+import com.foot.tourpal.base.bean.BusinessBean;
+
 /**
  * Created by ZhangPu on 2017/7/10.
  */
 
-public class LoginData {
+public class LoginData implements BusinessBean {
     private String id;
     private String userEmail;
     private String userId; //用户ID

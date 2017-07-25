@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="meta_baidu_push_app_key">3</string>
+    <string name="meta_bugly_id_main">900036382</string>
+
+    <!--环境定义参见Environment类-->
+    <string name="meta_env">103</string>
+
+</resources>

@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import com.foot.tourpal.BuildConfig;
 import com.foot.tourpal.R;
+import com.foot.tourpal.base.framework.Config;
+import com.foot.tourpal.base.framework.Environment;
 import com.foot.tourpal.base.mvp.Api;
+import com.foot.tourpal.base.tool.StringUtil;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.jess.arms.base.App;
-import com.jess.arms.base.delegate.AppDelegate;
+import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.di.module.GlobalConfigModule;
 import com.jess.arms.http.GlobalHttpHandler;
 import com.jess.arms.http.RequestInterceptor;
@@ -137,9 +140,9 @@ public class GlobalConfiguration implements ConfigModule {
     }
 
     @Override
-    public void injectAppLifecycle(Context context, List<AppDelegate.Lifecycle> lifecycles) {
-        // AppDelegate.Lifecycle 的所有方法都会在基类Application对应的生命周期中被调用,所以在对应的方法中可以扩展一些自己需要的逻辑
-        lifecycles.add(new AppDelegate.Lifecycle() {
+    public void injectAppLifecycle(Context context, List<AppLifecycles> lifecycles) {
+        // AppLifecycles 的所有方法都会在基类Application对应的生命周期中被调用,所以在对应的方法中可以扩展一些自己需要的逻辑
+        lifecycles.add(new AppLifecycles() {
 
             @Override
             public void attachBaseContext(Context base) {
@@ -148,9 +151,21 @@ public class GlobalConfiguration implements ConfigModule {
 
             @Override
             public void onCreate(Application application) {
-                if (BuildConfig.LOG_DEBUG) {//Timber日志打印
+                if (BuildConfig.LOG_DEBUG) {//Timber初始化
+                    //Timber 是一个日志框架容器,外部使用统一的Api,内部可以动态的切换成任何日志框架(打印策略)进行日志打印
+                    //并且支持添加多个日志框架(打印策略),做到外部调用一次 Api,内部却可以做到同时使用多个策略
+                    //比如添加三个策略,一个打印日志,一个将日志保存本地,一个将日志上传服务器
                     Timber.plant(new Timber.DebugTree());
+                    // 如果你想将框架切换为 Logger 来打印日志,请使用下面的代码,如想切换为其他日志框架请根据下面的方式扩展
+//                    Logger.addLogAdapter(new AndroidLogAdapter());
+//                    Timber.plant(new Timber.DebugTree() {
+//                        @Override
+//                        protected void log(int priority, String tag, String message, Throwable t) {
+//                            Logger.log(priority, tag, message, t);
+//                        }
+//                    });
                 }
+                Config.changeEnv(StringUtil.toInt(UiUtils.getString(application, R.string.meta_env), Environment.PRODUCT), false);
                 //leakCanary内存泄露检查
                 ((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
             }

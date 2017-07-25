@@ -20,7 +20,7 @@ public class VerificationCodeButton extends android.support.v7.widget.AppCompatB
     /*
      倒计时时长,默认计时时间
      */
-    private long defaultTime = 6*1000;
+    private long defaultTime = 60 * 1000;
     private long time = defaultTime;
 
     /*

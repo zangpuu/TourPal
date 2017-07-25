@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +19,23 @@ import android.widget.Toast;
 import com.foot.tourpal.R;
 import com.foot.tourpal.base.framework.AppCache;
 import com.foot.tourpal.base.widget.PullScrollView;
+import com.foot.tourpal.business.login.model.entity.LoginResponse;
 import com.foot.tourpal.business.mine.component.DaggerMineComponent;
 import com.foot.tourpal.business.mine.contract.MineContract;
 import com.foot.tourpal.business.mine.module.MineModule;
 import com.foot.tourpal.business.mine.presenter.MinePresenter;
+import com.jess.arms.base.App;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.LogUtils;
 import com.jess.arms.utils.UiUtils;
+import com.jess.arms.widget.imageloader.ImageLoader;
+import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+
+import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class MineFragment extends BaseFragment<MinePresenter> implements MineContract.View, PullScrollView.OnTurnListener,View.OnClickListener {
 
@@ -36,7 +46,10 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
     private TableLayout mMainLayout;
     private LinearLayout mSetting;
     private LinearLayout mDev;
-
+    private AppComponent appComponent;
+    private ImageLoader imageLoader;
+    @BindView(R.id.user_avatar)
+    CircleImageView userAvatar;
 
     public static MineFragment newInstance() {
         if(fragment == null) {
@@ -110,18 +123,31 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
 
             mMainLayout.addView(tableRow);
         }
-    }
-
-    @Override
-    public void setData(Object data) {
+        appComponent = ((App)getActivity().getApplicationContext()).getAppComponent();
+        imageLoader = appComponent.imageLoader();
         if (isAdded() && isVisible())
             if (AppCache.instance().isLogined()) {
-
+                LoginResponse loginResponse = DataHelper.getDeviceData(getActivity(), "loginResult");
+                if(loginResponse != null && !TextUtils.isEmpty(loginResponse.getData().getUserAvatar())){
+                    Timber.d(loginResponse.getData().getUserAvatar());
+                    imageLoader.loadImage(appComponent.appManager().getCurrentActivity() == null
+                                    ? appComponent.application() : appComponent.appManager().getCurrentActivity(),
+                            GlideImageConfig
+                                    .builder()
+                                    .url(loginResponse.getData().getUserAvatar())
+                                    .imageView(userAvatar)
+                                    .build());
+                }
             } else {
                 Intent intent = new Intent();
                 intent.setData(Uri.parse("App://www.foot.com/LoginActivity"));
                 UiUtils.startActivity(getActivity(), intent);
             }
+    }
+
+    @Override
+    public void setData(Object data) {
+
     }
 
     @Override
@@ -170,12 +196,16 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
     @Override
     public void onDestroy() {
         super.onDestroy();
+        imageLoader.clear(appComponent.application(), GlideImageConfig.builder()
+                .imageViews(userAvatar)
+                .build());
         mDev = null;
         mSetting = null;
         mMainLayout = null;
         mHeadImg = null;
         mScrollView = null;
         fragment = null;
+        userAvatar = null;
     }
 
     @Override
