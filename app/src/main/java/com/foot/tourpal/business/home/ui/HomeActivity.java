@@ -104,6 +104,7 @@ public class HomeActivity extends BaseActivity<HomePresenter> implements HomeCon
         viewPager.addOnPageChangeListener(this);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mPresenter.tryLogin();
     }
 
     @Override

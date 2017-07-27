@@ -31,7 +31,6 @@ import com.jess.arms.utils.UiUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,11 +65,10 @@ public class GlobalConfiguration implements ConfigModule {
                            重新请求token,并重新执行请求 */
                         try {
                             if (!TextUtils.isEmpty(httpResult) && RequestInterceptor.isJson(response.body().contentType())) {
-                                JSONArray array = new JSONArray(httpResult);
-                                JSONObject object = (JSONObject) array.get(0);
-                                String login = object.getString("login");
-                                String avatar_url = object.getString("avatar_url");
-                                Timber.w("Result ------> " + login + "    ||   Avatar_url------> " + avatar_url);
+                                JSONObject object = new JSONObject(httpResult);
+                                if(object.has("msg") && object.getString("msg").contains("token已过期")) {
+
+                                }
                             }
 
                         } catch (JSONException e) {

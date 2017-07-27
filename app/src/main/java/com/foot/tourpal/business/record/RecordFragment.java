@@ -6,29 +6,32 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.TextureMapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.MarkerOptions;
 import com.foot.tourpal.R;
+import com.foot.tourpal.base.framework.AppCache;
 import com.foot.tourpal.business.record.component.DaggerRecordComponent;
 import com.foot.tourpal.business.record.contract.RecordContract;
 import com.foot.tourpal.business.record.module.RecordModule;
 import com.foot.tourpal.business.record.presenter.RecordPresenter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.DataHelper;
 import com.jess.arms.utils.LogUtils;
 import com.jess.arms.utils.UiUtils;
 
-public class RecordFragment extends BaseFragment<RecordPresenter> implements RecordContract.View {
+import butterknife.BindView;
+import timber.log.Timber;
+
+public class RecordFragment extends BaseFragment<RecordPresenter> implements RecordContract.View, View.OnClickListener {
 
     private static RecordFragment fragment;
 
@@ -37,16 +40,47 @@ public class RecordFragment extends BaseFragment<RecordPresenter> implements Rec
     private TextureMapView mapView;
     private AMap aMap;
     private AMapLocationClient locationClient = null;
+    private AMapLocationClientOption mOption = new AMapLocationClientOption();
+    @BindView(R.id.bt_start)
+    Button startBt;
+    @BindView(R.id.bt_stop)
+    Button stopBt;
+    @BindView(R.id.ll_type)
+    LinearLayout typeLayout;
+    @BindView(R.id.bt_type_1)
+    Button typeBt1;
+    @BindView(R.id.bt_type_2)
+    Button typeBt2;
+    @BindView(R.id.bt_type_3)
+    Button typeBt3;
+    @BindView(R.id.bt_type_4)
+    Button typeBt4;
+    @BindView(R.id.bt_type_5)
+    Button typeBt5;
+    @BindView(R.id.bt_type_6)
+    Button typeBt6;
+    @BindView(R.id.bt_type_7)
+    Button typeBt7;
+    @BindView(R.id.bt_type_8)
+    Button typeBt8;
+    @BindView(R.id.bt_type_9)
+    Button typeBt9;
+    @BindView(R.id.bt_type_10)
+    Button typeBt10;
+    @BindView(R.id.bt_type_11)
+    Button typeBt11;
+    @BindView(R.id.bt_type_12)
+    Button typeBt12;
 
     public static RecordFragment newInstance() {
-        if(fragment == null) {
+        if (fragment == null) {
             synchronized (RecordFragment.class) {
                 fragment = new RecordFragment();
             }
         }
         return fragment;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,9 +121,10 @@ public class RecordFragment extends BaseFragment<RecordPresenter> implements Rec
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        mapView=null;
-        aMap=null;
-        locationClient=null;
+        mapView = null;
+        aMap = null;
+        locationClient = null;
+        mOption = null;
     }
 
     @Override
@@ -109,7 +144,27 @@ public class RecordFragment extends BaseFragment<RecordPresenter> implements Rec
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        startBt.setOnClickListener(this);
+        stopBt.setOnClickListener(this);
+        typeBt1.setOnClickListener(this);
+        typeBt2.setOnClickListener(this);
+        typeBt3.setOnClickListener(this);
+        typeBt4.setOnClickListener(this);
+        typeBt5.setOnClickListener(this);
+        typeBt6.setOnClickListener(this);
+        typeBt7.setOnClickListener(this);
+        typeBt8.setOnClickListener(this);
+        typeBt9.setOnClickListener(this);
+        typeBt10.setOnClickListener(this);
+        typeBt11.setOnClickListener(this);
+        typeBt12.setOnClickListener(this);
+        if (DataHelper.getBooleanSF(this.getActivity(), AppCache.instance().KEY_IS_RECORDING)) {
+            startBt.setVisibility(View.GONE);
+            stopBt.setVisibility(View.VISIBLE);
+        } else {
+            startBt.setVisibility(View.VISIBLE);
+            stopBt.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -120,28 +175,37 @@ public class RecordFragment extends BaseFragment<RecordPresenter> implements Rec
     /**
      * 初始化定位
      *
-     * @since 2.8.0
      * @author hongming.wang
-     *
+     * @since 2.8.0
      */
-    private void initLocation(){
+    private void initLocation() {
         //初始化client
         locationClient = new AMapLocationClient(getActivity().getApplicationContext());
         //设置定位参数
         locationClient.setLocationOption(getDefaultOption());
         // 设置定位监听
-        locationClient.setLocationListener(locationListener);
+        locationClient.setLocationListener(aMapLocation -> {
+            if (null != aMapLocation && aMapLocation.getLatitude() != 0 && aMapLocation.getLongitude() != 0) {
+                LatLng now = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+                Timber.i(TAG + String.format("init loc, lat=%f, lon=%f", now.latitude, now.longitude));
+                aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                        now, 15, 0, 0)));
+                locationClient.stopLocation();
+            } else {
+                LogUtils.warnInfo(tag, "location failed");
+            }
+        });
         locationClient.startLocation();
     }
 
     /**
      * 默认的定位参数
-     * @since 2.8.0
-     * @author hongming.wang
      *
+     * @author hongming.wang
+     * @since 2.8.0
      */
-    private AMapLocationClientOption getDefaultOption(){
-        AMapLocationClientOption mOption = new AMapLocationClientOption();
+    private AMapLocationClientOption getDefaultOption() {
+
         mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
         mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
         mOption.setHttpTimeOut(30000);//可选，设置网络请求超时时间。默认为30秒。在仅设备模式下无效
@@ -155,27 +219,6 @@ public class RecordFragment extends BaseFragment<RecordPresenter> implements Rec
         mOption.setLocationCacheEnable(true); //可选，设置是否使用缓存定位，默认为true
         return mOption;
     }
-
-    /**
-     * 定位监听
-     */
-    AMapLocationListener locationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation loc) {
-            if (null != loc && loc.getLatitude() != 0 && loc.getLongitude() != 0) {
-                LatLng now = new LatLng(loc.getLatitude(), loc.getLongitude());
-                aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                       now, 15, 0, 0)));
-                locationClient.stopLocation();
-                aMap.clear();
-                aMap.addMarker(new MarkerOptions().position(now)
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-            } else {
-                LogUtils.warnInfo(tag, "location failed");
-            }
-        }
-    };
 
     @Override
     public void showLoading() {
@@ -200,5 +243,22 @@ public class RecordFragment extends BaseFragment<RecordPresenter> implements Rec
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.bt_start) {
+            typeLayout.setVisibility(View.VISIBLE);
+        } else if (v.getId() == R.id.bt_stop) {
+            startBt.setVisibility(View.VISIBLE);
+            stopBt.setVisibility(View.GONE);
+            DataHelper.setBooleanSF(this.getActivity(), AppCache.instance().KEY_IS_RECORDING, false);
+        } else {
+            showMessage(((Button)v).getText() + "");
+            typeLayout.setVisibility(View.GONE);
+            startBt.setVisibility(View.GONE);
+            stopBt.setVisibility(View.VISIBLE);
+            DataHelper.setBooleanSF(this.getActivity(), AppCache.instance().KEY_IS_RECORDING, true);
+        }
     }
 }

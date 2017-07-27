@@ -8,11 +8,13 @@ public class AppCache {
 
     private static AppCache appCache = null;
     private boolean isLogined = false;
-    private String userId = null;
-    private String token = null;
+    public final String KEY_USER_ID = "userId";
+    public final String KEY_TOKEN = "token";
+    public final String KEY_MOBILE = "mobile";
+    public final String KEY_IS_RECORDING = "isRecording";
 
-    public static AppCache instance(){
-        if(appCache == null){
+    public static AppCache instance() {
+        if (appCache == null) {
             appCache = new AppCache();
         }
         return appCache;
@@ -26,19 +28,4 @@ public class AppCache {
         isLogined = logined;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

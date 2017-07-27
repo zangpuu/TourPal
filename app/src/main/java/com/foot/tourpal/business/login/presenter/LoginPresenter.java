@@ -60,7 +60,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                             UiUtils.snackbarText(getCodeResponse.getMsg());
                         }
                         if (getCodeResponse.getStatus() == Api.RequestSuccess) {
-                            AppCache.instance().setUserId(getCodeResponse.getData().getUserId());
+                            DataHelper.setStringSF(mApplication, AppCache.instance().KEY_USER_ID, getCodeResponse.getData().getUserId());
                         }
                     }
                 });
@@ -73,10 +73,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         } else if (TextUtils.isEmpty(code)) {
             mRootView.showMessage("请填写验证码");
             return;
-        } else if (TextUtils.isEmpty(AppCache.instance().getUserId())) {
+        } else if (TextUtils.isEmpty(DataHelper.getStringSF(mApplication, AppCache.instance().KEY_USER_ID))) {
             mRootView.showMessage("请重新获取验证码");
         }
-        mModel.login(mobile, AppCache.instance().getUserId(), code)
+        mModel.login(mobile, DataHelper.getStringSF(mApplication, AppCache.instance().KEY_USER_ID), code)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -87,7 +87,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                         Timber.d(new Gson().toJson(loginResponse));
                         if (loginResponse.getStatus() == Api.RequestSuccess) {
                             AppCache.instance().setLogined(true);
-                            AppCache.instance().setToken(loginResponse.getData().getSysUserToken().getToken());
+                            DataHelper.setStringSF(mApplication, AppCache.instance().KEY_MOBILE, mobile);
+                            DataHelper.setStringSF(mApplication, AppCache.instance().KEY_TOKEN, loginResponse.getData().getSysUserToken().getToken());
                             //mAppManager.getCurrentActivity().recreate();
                             //mApplication.startActivity(new Intent().setData(Uri.parse("App://www.foot.com/HomeActivity")).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             DataHelper.saveDeviceData(mApplication,"loginResult", loginResponse);
